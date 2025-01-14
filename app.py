@@ -17,6 +17,15 @@ def predict_api():
      newData=scaler.transform(np.array(list(data.values())).reshape(1,-1))
      output=model.predict(newData)
      return jsonify(output[0])
+
+@app.route('/predict',methods=['POST'])
+def predict():
+    data=[float(x) for x in request.form.values()]
+    final_input=scaler.transform(np.array(data).reshape(1,-1))
+    prediction=model.predict(final_input)[0]
+    return render_template('home.html',prediction_text="The predicted median Income is {}".format(prediction))
+    
+    
     
 if __name__=='__main__':
     app.run(debug=True)
